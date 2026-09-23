@@ -4,202 +4,284 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>View3Labs</title>
-<meta name="description" content="A Web3-native creative studio building hand-crafted animated IP, intelligent collectibles and a regenerative ecosystem. One title. One token. 963 founders.">
+<meta name="description" content="A working animation studio in Liverpool putting hand-drawn IP on-chain and sharing it with the people who back it. One title. One token. 963 founders.">
 <meta property="og:title" content="View3Labs">
 <meta property="og:description" content="One title. One token. 963 founders. Built on Ethereum.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="poster.jpg">
 <style>
   :root {
-    --bg: #07070c;
-    --bg-soft: #0d0d16;
-    --card: #12121e;
-    --line: #23233a;
-    --text: #eceaf6;
-    --muted: #9b98b3;
-    --accent: #8b7bff;
-    --accent-2: #4fd1c5;
-    --warn: #ffb347;
-    --radius: 14px;
+    color-scheme: dark;
+    --ground: #07070c;
+    --surface: #0f0f18;
+    --line: #22222f;
+    --text: #eceaf2;
+    --muted: #8d8c9b;
+    --accent: #2fd4c7;
+    --on-accent: #04211f;
+    --warn: #ffa54d;
+    --warn-wash: rgba(255,165,77,0.09);
+    --warn-edge: rgba(255,165,77,0.34);
+    --f-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --f-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+
   body {
-    background: var(--bg);
+    background: var(--ground);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    line-height: 1.6;
+    font-family: var(--f-sans);
+    font-size: 16px;
+    line-height: 1.62;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 880px; margin: 0 auto; padding: 0 20px; }
 
-  /* Hero */
+  img { max-width: 100%; display: block; }
+
+  .wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-inline: 20px;
+  }
+
+  .label {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ---- poster band ---- */
+
+  .band { position: relative; line-height: 0; }
+  .band img { width: 100%; }
+  .band::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+      rgba(7,7,12,0.30) 0%,
+      rgba(7,7,12,0.05) 38%,
+      rgba(7,7,12,0.74) 85%,
+      rgb(7,7,12) 100%);
+  }
+
+  /* ---- hero copy ---- */
+
   .hero {
-    min-height: 88vh;
+    padding-block: clamp(28px, 5vw, 46px) clamp(38px, 7vw, 64px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    padding: 72px 0 48px;
-    background:
-      radial-gradient(ellipse 70% 45% at 50% -5%, rgba(139,123,255,0.16), transparent),
-      radial-gradient(ellipse 45% 32% at 82% 12%, rgba(79,209,197,0.07), transparent);
+    gap: 16px;
+    margin-top: -6px;
+    position: relative;
   }
-  .moon { font-size: 2.2rem; margin-bottom: 18px; }
+
   .hero h1 {
-    font-size: clamp(2.4rem, 7vw, 4.2rem);
+    font-size: clamp(2rem, 6vw, 3.2rem);
     font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+    max-width: 16ch;
+    text-wrap: balance;
   }
-  .hero h1 .grad {
-    background: linear-gradient(100deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .tagline {
-    margin: 22px auto 10px;
-    font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+
+  .hero .sub {
     color: var(--muted);
-    max-width: 34em;
+    max-width: 46ch;
+    font-size: clamp(1rem, 2vw, 1.08rem);
   }
-  .magic {
-    margin-top: 6px;
-    font-size: clamp(1.1rem, 3vw, 1.45rem);
-    font-weight: 700;
-    letter-spacing: 0.01em;
-  }
-  .cta-row { margin-top: 36px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .btn {
-    display: inline-block;
-    padding: 13px 26px;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 1rem;
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+
+  .cta {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 11px 22px;
+    border-radius: 2px;
     text-decoration: none;
-    transition: transform 0.12s ease, opacity 0.12s ease;
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: transparent;
+    transition: border-color 0.15s ease, color 0.15s ease;
   }
-  .btn:hover { transform: translateY(-1px); opacity: 0.92; }
-  .btn-primary { background: linear-gradient(100deg, var(--accent), #6a5df0); color: #fff; }
-  .btn-ghost { border: 1px solid var(--line); color: var(--text); background: rgba(255,255,255,0.02); }
+  .cta-key { border-color: var(--accent); color: var(--accent); }
+  .cta-key:hover { background: rgba(47,212,199,0.08); }
+  .cta:hover { border-color: var(--muted); }
+  .cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  /* Sections */
-  section { padding: 56px 0; border-top: 1px solid var(--line); }
-  h2 { font-size: 1.5rem; margin-bottom: 18px; letter-spacing: -0.01em; }
-  p.lead { color: var(--muted); max-width: 42em; }
+  /* ---- sections ---- */
 
-  /* Mint status */
+  section { padding-block: clamp(38px, 6vw, 58px); border-top: 1px solid var(--line); }
+  section > .wrap { display: flex; flex-direction: column; gap: 18px; }
+  h2 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; }
+  p.lead { color: var(--muted); max-width: 52ch; }
+
+  /* ---- mint status ---- */
+
   .mint-card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 26px;
-    margin-top: 20px;
+    border: 1px solid var(--warn-edge);
+    border-left-width: 3px;
+    border-left-color: var(--warn);
+    background: var(--warn-wash);
+    padding: clamp(20px, 3vw, 26px);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-  .badge {
-    display: inline-block;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+  .mint-card.is-live {
+    border-color: var(--line);
+    border-left-color: var(--accent);
+    background: var(--surface);
+  }
+
+  .flag {
+    font-family: var(--f-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    padding: 5px 12px;
-    border-radius: 999px;
-    margin-bottom: 14px;
+    color: var(--warn);
+    align-self: flex-start;
   }
-  .badge-wait { background: rgba(255,179,71,0.12); color: var(--warn); border: 1px solid rgba(255,179,71,0.35); }
-  .badge-live { background: rgba(79,209,197,0.12); color: var(--accent-2); border: 1px solid rgba(79,209,197,0.35); }
-  .mint-card p { color: var(--muted); }
-  .mint-card strong { color: var(--text); }
+  /* Solid teal is reserved for the live state and used nowhere else. */
+  .flag.is-live {
+    background: var(--accent);
+    color: var(--on-accent);
+    padding: 4px 10px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+
+  .mint-card p { color: var(--muted); max-width: 66ch; font-size: 0.96rem; }
+  .mint-card p strong { color: var(--text); font-weight: 600; }
+
   .addr {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 0.92rem;
-    background: var(--bg-soft);
+    font-family: var(--f-mono);
+    font-size: 0.9rem;
+    background: var(--ground);
     border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin: 14px 0;
+    border-radius: 2px;
+    padding: 11px 14px;
     word-break: break-all;
     display: none;
   }
-  .supply { display: none; margin-top: 10px; font-weight: 700; }
-  #mint-btn { display: none; margin-top: 16px; }
+  .supply { display: none; font-family: var(--f-mono); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+  #mint-btn { display: none; align-self: flex-start; }
 
-  /* Tiers */
-  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 20px; }
-  .tier {
-    background: var(--card);
+  /* ---- verification ---- */
+
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--line);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 20px;
   }
-  .tier .n { font-size: 1.7rem; font-weight: 800; }
-  .tier .t { font-weight: 700; margin-top: 2px; }
-  .tier .d { color: var(--muted); font-size: 0.9rem; margin-top: 6px; }
+  .fact { background: var(--ground); padding: 17px 19px; display: flex; flex-direction: column; gap: 3px; }
+  .fact .k { font-family: var(--f-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .fact .v { font-size: 0.96rem; font-variant-numeric: tabular-nums; }
 
-  /* Links */
-  .links-list { display: grid; gap: 12px; margin-top: 20px; max-width: 520px; }
+  /* ---- tiers ---- */
+
+  .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(176px, 1fr)); gap: 12px; }
+  .tier { border: 1px solid var(--line); padding: 20px; display: flex; flex-direction: column; gap: 2px; }
+  .tier .n { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .tier .t { font-weight: 600; }
+  .tier .d { color: var(--muted); font-size: 0.88rem; }
+
+  /* ---- links ---- */
+
+  .links-list { display: grid; gap: 10px; max-width: 540px; }
   .link-item {
     display: flex;
     align-items: center;
     gap: 12px;
-    background: var(--card);
     border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 15px 20px;
+    padding: 15px 19px;
     color: var(--text);
     text-decoration: none;
-    font-weight: 600;
-    transition: border-color 0.12s ease, transform 0.12s ease;
+    font-weight: 500;
+    transition: border-color 0.15s ease;
   }
-  .link-item:hover { border-color: var(--accent); transform: translateY(-1px); }
-  .link-item span.sub { color: var(--muted); font-weight: 400; font-size: 0.88rem; margin-left: auto; }
+  .link-item:hover { border-color: var(--accent); }
+  .link-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .link-item .sub { color: var(--muted); font-weight: 400; font-size: 0.87rem; margin-left: auto; text-align: right; }
 
-  /* Trust + footer */
-  .trust p { color: var(--muted); max-width: 46em; }
-  .trust strong { color: var(--text); }
-  footer {
-    border-top: 1px solid var(--line);
-    padding: 36px 0 48px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.9rem;
+  /* ---- footer ---- */
+
+  footer { border-top: 1px solid var(--line); padding-block: 38px 52px; }
+  footer > .wrap { display: flex; flex-direction: column; gap: 10px; }
+  .pledge { font-weight: 700; font-size: 1.05rem; }
+  footer p { color: var(--muted); font-size: 0.9rem; }
+  footer a { color: var(--muted); }
+  .fine { font-size: 0.82rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
   }
-  footer .pledge { font-weight: 700; color: var(--text); margin-bottom: 8px; }
 </style>
 </head>
 <body>
 
-<header class="hero">
-  <div class="wrap">
-    <div class="moon">🌙</div>
-    <h1>Own the studio,<br><span class="grad">not just the drop.</span></h1>
-    <p class="tagline">View3Labs is a working animation studio putting hand-drawn IP on-chain and sharing it with the people who back it. Built on Ethereum.</p>
-    <p class="magic">One title. One token. 963 founders.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="#mint">The Founder NFT</a>
-      <a class="btn btn-ghost" href="#links">Links</a>
+<header>
+  <div class="band">
+    <img src="poster.jpg" alt="View3Labs: seven panels of character design and animation work from the studio" width="1400" height="805">
+  </div>
+  <div class="wrap hero">
+    <h1>Own the studio, not just the drop.</h1>
+    <p class="sub">A working animation studio in Liverpool, putting hand-drawn IP on-chain and sharing it with the people who back it. Built on Ethereum.</p>
+    <div class="actions">
+      <a class="cta cta-key" href="#verify">See the proof</a>
+      <a class="cta" href="#links">Official links</a>
     </div>
   </div>
 </header>
 
 <section id="mint">
   <div class="wrap">
-    <h2>The Founder NFT · 963</h2>
-    <p class="lead">Your stake in the whole studio and everything it makes. Lifetime access, equal $VIEW3 rewards for every holder, and a real vote.</p>
-
-    <div class="tiers">
-      <div class="tier"><div class="n">9</div><div class="t">Founders' Circle</div><div class="d">Invited</div></div>
-      <div class="tier"><div class="n">90</div><div class="t">Architect</div><div class="d">Invited</div></div>
-      <div class="tier"><div class="n">264</div><div class="t">Pioneer</div><div class="d">Earned in Discord, discounted mint</div></div>
-      <div class="tier"><div class="n">600</div><div class="t">Genesis</div><div class="d">Public mint · 0.18 ETH</div></div>
-    </div>
-
-    <div class="mint-card">
-      <span id="status-badge" class="badge badge-wait">Nothing is deployed yet</span>
+    <h2>Mint status</h2>
+    <div class="mint-card" id="mint-card">
+      <span class="flag" id="status-badge">Nothing is deployed yet</span>
       <p id="status-copy"><strong>No View3Labs contract is live on any chain.</strong> Anything on-chain claiming to be $VIEW3 or the View3Labs Founder NFT today is fake. The official contract address will appear here and in one channel of our Discord, posted by the team, and nowhere else. The mint runs on independently audited, battle-tested contracts, and our configuration is published for anyone to verify. The team will never DM you first.</p>
       <div id="addr" class="addr"></div>
       <div id="supply" class="supply"></div>
-      <a id="mint-btn" class="btn btn-primary" href="#" rel="noopener">Mint</a>
+      <a id="mint-btn" class="cta cta-key" href="#" rel="noopener">Mint</a>
+    </div>
+  </div>
+</section>
+
+<section id="verify">
+  <div class="wrap">
+    <h2>What you can check today</h2>
+    <p class="lead">Every claim on this page is one you can verify yourself, now, before anything is deployed.</p>
+    <div class="facts">
+      <div class="fact"><span class="k">Team</span><span class="v">Named, not pseudonymous</span></div>
+      <div class="fact"><span class="k">Mint contracts</span><span class="v">Audited platform, not bespoke</span></div>
+      <div class="fact"><span class="k">Token contract</span><span class="v">Audited before TGE</span></div>
+      <div class="fact"><span class="k">Team vesting</span><span class="v">12 month cliff, 36 month vest</span></div>
+      <div class="fact"><span class="k">Treasury</span><span class="v">Safe 2-of-3, 48 month lock</span></div>
+      <div class="fact"><span class="k">Ownership</span><span class="v">Contracts held by the Safe</span></div>
+      <div class="fact"><span class="k">Company</span><span class="v">View3Labs Ltd owns all IP</span></div>
+      <div class="fact"><span class="k">This page</span><span class="v">Every change is a public commit</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="founder">
+  <div class="wrap">
+    <h2>The Founder NFT &middot; 963</h2>
+    <p class="lead">A stake in the whole studio and everything it makes. Lifetime access, equal $VIEW3 rewards for every holder, and a real vote.</p>
+    <div class="tiers">
+      <div class="tier"><span class="n">9</span><span class="t">Founders' Circle</span><span class="d">Invited</span></div>
+      <div class="tier"><span class="n">90</span><span class="t">Architect</span><span class="d">Invited</span></div>
+      <div class="tier"><span class="n">264</span><span class="t">Pioneer</span><span class="d">Earned in Discord, discounted mint</span></div>
+      <div class="tier"><span class="n">600</span><span class="t">Genesis</span><span class="d">Public mint &middot; 0.18 ETH</span></div>
     </div>
   </div>
 </section>
@@ -209,26 +291,20 @@
     <h2>Official links</h2>
     <p class="lead">These are the only official View3Labs channels. Anything else is not us.</p>
     <div class="links-list">
-      <a class="link-item" href="https://x.com/view3labs" rel="noopener">𝕏 &nbsp;@view3labs <span class="sub">Announcements first</span></a>
-      <a class="link-item" href="#" id="discord-link" rel="noopener">💬 &nbsp;Discord <span class="sub">Opening October</span></a>
-      <a class="link-item" href="https://github.com/View3Labs/README/blob/main/litepaper.md" rel="noopener">📄 &nbsp;Litepaper <span class="sub">Read it in five minutes</span></a>
-      <a class="link-item" href="https://github.com/View3Labs" rel="noopener">🛠 &nbsp;GitHub <span class="sub">Everything in the open</span></a>
+      <a class="link-item" href="https://x.com/view3labs" rel="noopener">X &middot; @view3labs <span class="sub">Announcements first</span></a>
+      <a class="link-item" href="#" id="discord-link" rel="noopener">Discord <span class="sub">Opening October</span></a>
+      <a class="link-item" href="https://github.com/View3Labs/README/blob/main/litepaper.md" rel="noopener">Litepaper <span class="sub">Read it in five minutes</span></a>
+      <a class="link-item" href="https://github.com/View3Labs" rel="noopener">GitHub <span class="sub">Everything in the open</span></a>
     </div>
-  </div>
-</section>
-
-<section class="trust">
-  <div class="wrap">
-    <h2>Built to last</h2>
-    <p><strong>Named team. Audited contracts. Locked vesting. No exceptions.</strong> Team allocations locked four years. Treasury locked four years, held in a multisig, spent in the open. 10% of the token supply goes to real-world impact, backed by the 80/20 pledge: a fifth of studio profit follows it, for as long as the studio earns.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
     <p class="pledge">10% of the token. 20% of the profit. For ever.</p>
-    <p>View3Labs · Liverpool · Built on Ethereum · <a href="https://x.com/view3labs" style="color:var(--muted)">@view3labs</a></p>
-    <p style="margin-top:10px; font-size:0.8rem;">Nothing here is financial advice. Your keys stay with you, always.</p>
+    <p>10% of the supply goes to real-world impact, backed by the 80/20 pledge: a fifth of studio profit follows it, for as long as the studio earns.</p>
+    <p>View3Labs &middot; Liverpool &middot; Built on Ethereum &middot; <a href="https://x.com/view3labs">@view3labs</a></p>
+    <p class="fine">Nothing here is financial advice. Your keys stay with you, always.</p>
   </div>
 </footer>
 
@@ -270,8 +346,9 @@ async function init() {
   }
   if (!MINT.deployed || !MINT.address) return;
 
+  document.getElementById("mint-card").classList.add("is-live");
   const badge = document.getElementById("status-badge");
-  badge.className = "badge badge-live";
+  badge.classList.add("is-live");
   badge.textContent = "Live · one official address";
   document.getElementById("status-copy").innerHTML =
     "<strong>This is the one official View3Labs contract address.</strong> " +
