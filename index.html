@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>View3Labs</title>
-<meta name="description" content="A working animation studio in Liverpool putting hand-drawn IP on-chain and sharing it with the people who back it. One title. One token. 963 founders.">
+<meta name="description" content="A working creative studio in Liverpool putting hand-drawn IP on-chain and sharing it with the people who back it. One title. One token. 963 founders.">
 <meta property="og:title" content="View3Labs">
 <meta property="og:description" content="One title. One token. 963 founders. Built on Ethereum.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="poster.jpg">
+<meta property="og:image" content="View3Labs-hero-poster-v1.jpg">
 <style>
   :root {
     color-scheme: dark;
@@ -46,18 +46,10 @@
     padding-inline: 20px;
   }
 
-  .label {
-    font-family: var(--f-mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
   /* ---- poster band ---- */
 
   .band { position: relative; line-height: 0; }
-  .band img { width: 100%; }
+  .band img { width: 100%; height: auto; }
   .band::after {
     content: "";
     position: absolute;
@@ -82,11 +74,11 @@
   }
 
   .hero h1 {
-    font-size: clamp(2rem, 6vw, 3.2rem);
+    font-size: clamp(2rem, 5.6vw, 3.1rem);
     font-weight: 800;
     letter-spacing: -0.03em;
-    line-height: 1.04;
-    max-width: 16ch;
+    line-height: 1.05;
+    max-width: 19ch;
     text-wrap: balance;
   }
 
@@ -108,7 +100,7 @@
     border: 1px solid var(--line);
     color: var(--text);
     background: transparent;
-    transition: border-color 0.15s ease, color 0.15s ease;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
   }
   .cta-key { border-color: var(--accent); color: var(--accent); }
   .cta-key:hover { background: rgba(47,212,199,0.08); }
@@ -231,11 +223,11 @@
 
 <header>
   <div class="band">
-    <img src="poster.jpg" alt="View3Labs: seven panels of character design and animation work from the studio" width="1400" height="805">
+    <img src="View3Labs-hero-poster-v1.jpg" alt="View3Labs: seven panels of character design and animation work from the studio" width="2640" height="1518">
   </div>
   <div class="wrap hero">
-    <h1>Own the studio, not just the drop.</h1>
-    <p class="sub">A working animation studio in Liverpool, putting hand-drawn IP on-chain and sharing it with the people who back it. Built on Ethereum.</p>
+    <h1>Own the studio, and everything it makes.</h1>
+    <p class="sub">A working creative studio in Liverpool, putting hand-drawn IP on-chain and sharing it with the people who back it. Built on Ethereum.</p>
     <div class="actions">
       <a class="cta cta-key" href="#verify">See the proof</a>
       <a class="cta" href="#links">Official links</a>
