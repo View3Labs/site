@@ -1,14 +1,15 @@
 # View3Labs · site 🌙
 
-The official View3Labs website: a single static page, no frameworks, no CMS, no third-party scripts. Small on purpose — the fewer moving parts, the fewer ways to tamper with the one thing that matters here: the official links and, at deploy, the official contract address.
+The official View3Labs website, pre-launch edition: the hero holding page and the Official links page. Static files only, no frameworks, no CMS, no third-party scripts. Small on purpose: the fewer moving parts, the fewer ways to tamper with the one thing that matters here, the official links and, at deploy, the official contract address.
 
 ## How it works
 
-- `index.html` is the whole site: hero, the Founder NFT (963), mint status, official links, trust.
-- `links/index.html` redirects `view3labs.com/links` to the links section.
-- The mint section is driven by the `MINT` config at the bottom of `index.html`. Until deploy it shows the standing warning: **nothing is deployed, anything claiming to be us is fake.**
-- At deploy, one commit flips `deployed: true` and sets `address` and `mintUrl`. The page then shows the one official address and reads the live minted count straight from the chain (a raw JSON-RPC call, no libraries).
-- Every change to this page is a public commit. That is deliberate: the history of the mint link is on the record.
+- `index.html` is the holding page: the hero, the Litepaper link, the X, Notion and GitHub icons, and an "Official links" button.
+- `links/index.html` is the Official links page, with the Mint status block beneath it. `view3labs.com/links` lands here.
+- `style.css`, `app.js`, `fonts/` and `assets/` are self-hosted. Nothing loads from a CDN.
+- The Mint status block is driven by `SITE_CONFIG` at the top of `app.js`. While `contractAddress` and `mintUrl` are empty it shows the standing warning: **nothing is deployed, anything claiming to be us is fake.** At deploy, one commit sets both values and the block flips to the one official address and the official mint page. `discordInvite` replaces "Coming soon" on the links page the same way.
+- No wallet connection, ever. The site links out; it never asks anyone to connect or sign.
+- Every change to this site is a public commit. That is deliberate: the history of the mint link is on the record.
 
 ## Deploy
 
@@ -16,7 +17,7 @@ GitHub Pages: Settings → Pages → Deploy from branch → `main`, root. Point 
 
 ## Rules
 
-- No external scripts or stylesheets, ever. If it needs a library, it does not go on this page.
+- No external scripts or stylesheets, ever. If it needs a library, it does not go on this site.
 - The contract address changes only by commit, only by the founder, mirrored in the one Discord channel.
 - Nothing here is financial advice.
 
