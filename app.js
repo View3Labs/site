@@ -12,7 +12,7 @@ const SITE_CONFIG = {
 
 /* View3Labs holding page (pre-launch): the v3 hero on its own, plus a separate Official links page
    - No wallet connection, no third-party scripts: everything here is self-hosted and local.
-   - Canvas: reactive particle field (cursor parallax, time-driven twinkle at constant brightness, energy-driven drift + trails).
+   - Canvas: reactive particle field (cursor parallax, energy-driven twinkle/drift).
    - Header wordmark: alpha video reveal (HEVC alpha on WebKit, VP9 alpha elsewhere, screen-blended MP4 fallback,
      PNG when no video route works); plays on load, holds its last frame, replays on hover
    - Sticky header compacts once scrolled; the Official links page reuses the same script
@@ -111,7 +111,7 @@ const SITE_CONFIG = {
     const io = new IntersectionObserver((entries) => {           // plays its reveal once the footer scrolls into view
       entries.forEach((en) => { if (en.isIntersecting) { footMark.play(); io.disconnect(); } });
     }, { threshold: 0.4 });
-    io.observe(footWord);
+    io.observe(footWord.parentElement);                            // the video is display:none until it plays, so watch its wrapper
   }
 
   /* ---------- Hero symbol (alpha video over the particle field) with the same fallback chain ---------- */
@@ -153,6 +153,8 @@ const SITE_CONFIG = {
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+  const setTopH = () => { if (!stuck) root.style.setProperty("--top-h", top.offsetHeight + "px"); };   // hero height = viewport minus the header
+  setTopH(); window.addEventListener("resize", setTopH, { passive: true }); window.addEventListener("load", setTopH);
 
   /* ---------- Scroll reveal ---------- */
   const reveals = Array.from(document.querySelectorAll(".reveal"));
@@ -221,9 +223,9 @@ const SITE_CONFIG = {
       const tw = 0.5 + 0.5 * Math.sin(t * (1.2 + d.z) + d.tw);
       const sx = (d.x - state.x * 0.08 * d.z) * W;
       const sy = (d.y - state.y * 0.06 * d.z) * H;
-      const a = 0.72 * tw * (0.5 + d.z * 0.5);                 // always at full brightness; pointer energy only drives drift + trails
+      const a = (0.25 + e * 0.45) * tw * (0.5 + d.z * 0.5);    // dim at rest, brightens with pointer energy
       ctx.fillStyle = `rgba(${d.c},${a.toFixed(3)})`;
-      const s = d.r * (0.8 + d.z * 0.6) * 1.3;
+      const s = d.r * (0.8 + d.z * 0.6) * (1 + e * 0.6);
       ctx.fillRect(sx, sy, s, s);
       if (d.z > 0.85 && e > 0.3) {
         ctx.fillStyle = `rgba(${d.c},${(a * 0.35).toFixed(3)})`;
