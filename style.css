@@ -565,13 +565,3 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 html.is-still .sticker__dot { animation: none; }
 @media (max-width: 720px) { .sticker { padding: 10px 14px 10px 16px; } }
 @media (prefers-reduced-motion: reduce) { .sticker__dot { animation: none; } }
-
-/* Official links page: the rotating symbol sits behind the list, centred on the section */
-#links, #links .section__media { z-index: auto; }
-.links__media { pointer-events: none; }
-.links__media .section__video {
-  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  width: clamp(640px, 90vw, 1400px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;
-  opacity: 0.8; filter: none;
-}
-.links__media .section__video.is-blend { mix-blend-mode: screen; }
