@@ -12,7 +12,7 @@ const SITE_CONFIG = {
 
 /* View3Labs holding page (pre-launch): the v3 hero on its own, plus a separate Official links page
    - No wallet connection, no third-party scripts: everything here is self-hosted and local.
-   - Canvas: reactive particle field (cursor parallax, energy-driven twinkle/drift).
+   - Canvas: reactive particle field (cursor parallax, time-driven twinkle at constant brightness, energy-driven drift + trails).
    - Header wordmark: alpha video reveal (HEVC alpha on WebKit, VP9 alpha elsewhere, screen-blended MP4 fallback,
      PNG when no video route works); plays on load, holds its last frame, replays on hover
    - Sticky header compacts once scrolled; the Official links page reuses the same script
@@ -223,9 +223,9 @@ const SITE_CONFIG = {
       const tw = 0.5 + 0.5 * Math.sin(t * (1.2 + d.z) + d.tw);
       const sx = (d.x - state.x * 0.08 * d.z) * W;
       const sy = (d.y - state.y * 0.06 * d.z) * H;
-      const a = (0.25 + e * 0.45) * tw * (0.5 + d.z * 0.5);    // dim at rest, brightens with pointer energy
+      const a = 0.72 * tw * (0.5 + d.z * 0.5);                 // always at full brightness; pointer energy only drives drift + trails
       ctx.fillStyle = `rgba(${d.c},${a.toFixed(3)})`;
-      const s = d.r * (0.8 + d.z * 0.6) * (1 + e * 0.6);
+      const s = d.r * (0.8 + d.z * 0.6) * 1.3;
       ctx.fillRect(sx, sy, s, s);
       if (d.z > 0.85 && e > 0.3) {
         ctx.fillStyle = `rgba(${d.c},${(a * 0.35).toFixed(3)})`;
