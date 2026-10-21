@@ -1,0 +1,5 @@
+Contact: mailto:hello@view3labs.com
+Expires: 2027-10-21T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://view3labs.com/.well-known/security.txt
+Policy: https://github.com/View3Labs/README/blob/main/SECURITY.md
