@@ -78,8 +78,7 @@ strong { font-weight: 500; color: var(--ink); }
 .top.is-stuck .brand { transform: translate3d(0, 0, 0) scale(0.72); }
 .brand__word { position: relative; display: block; width: var(--word-w); }
 .brand__video, .brand__img {
-  width: 100%; aspect-ratio: 840 / 160; height: auto;
-  filter: drop-shadow(0 0 1px rgba(255,255,255,0.3));
+  width: 100%; aspect-ratio: 840 / 160; height: auto;                     /* no CSS filter here: WebKit drops a video's alpha when one is applied */
 }
 .brand__video { display: none; }
 .brand__video.is-blend { mix-blend-mode: screen; }
