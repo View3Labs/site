@@ -18,7 +18,7 @@
 <link rel="preload" href="fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/silkscreen-400.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/pixelify-sans.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="style.css?v=20261022a">
+<link rel="stylesheet" href="style.css?v=20261022b">
 </head>
 <body class="holding">
 
@@ -27,7 +27,7 @@
 
 <header class="top" data-top>
   <a class="brand" href="./" data-brand aria-label="View3Labs">
-    <img class="brand__mark" src="assets/mark-v3-white.png" alt="" width="512" height="512">
+    <img class="brand__mark" src="assets/mark-v3-gradient.png" alt="" width="512" height="512">
     <span class="brand__word">
       <video class="brand__video" data-wordmark muted playsinline preload="auto" aria-hidden="true"></video>
       <img class="brand__img" src="assets/wordmark-anim-last.png" alt="" width="840" height="160">
@@ -47,6 +47,9 @@
 
 <!-- Hero: the v3 hero on its own, holding back the rest of the site until launch -->
 <section class="hero" aria-labelledby="hero-headline">
+  <div class="section__media hero__media" aria-hidden="true">
+    <video class="section__video" data-bgvideo data-herosymbol autoplay muted loop playsinline preload="auto" poster="assets/symbol-poster.png"></video>
+  </div>
   <div class="hero__copy reveal">
     <div class="sticker reveal" role="status" aria-label="Full site coming soon">
       <span class="sticker__text"><span class="sticker__dot" aria-hidden="true"></span>Full site coming soon</span>
@@ -72,6 +75,6 @@
 
 </main>
 
-<script src="app.js?v=20261022a" defer></script>
+<script src="app.js?v=20261022b" defer></script>
 </body>
 </html>
