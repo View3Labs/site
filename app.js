@@ -82,10 +82,23 @@ const SITE_CONFIG = {
       video.classList.toggle("is-blend", !!s.blend); video.src = s.src; return true;
     };
     video.loop = false;
-    const hold = () => { if (video.duration) video.currentTime = Math.max(0, video.duration - 0.04); video.pause(); };
-    const play = () => { if (!motionOn) return; video.currentTime = 0; video.play().catch(() => {}); };
-    video.addEventListener("playing", () => wrap.classList.add("has-video"));
-    video.addEventListener("error", () => { if (next()) { if (motionOn) play(); else hold(); } });
+    let started = false;                                                             // true once the video has really played (autoplay can be blocked)
+    const show = () => wrap.classList.add("has-video");
+    const hide = () => wrap.classList.remove("has-video");
+    // Between plays the still PNG (the last frame) is on screen and the video rewinds while hidden, so no seek ever
+    // happens in view: the stale or black frame some browsers flash on a rewind can never be seen.
+    const rearm = () => { hide(); video.pause(); try { video.currentTime = 0; } catch (_) {} };
+    const hold = rearm;
+    // The video is swapped in only once a fresh frame has actually been painted.
+    const showOnFrame = () => { if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(() => show()); else show(); };
+    const play = () => {
+      if (!motionOn) return;
+      if (video.currentTime > 0) { try { video.currentTime = 0; } catch (_) {} }
+      const p = video.play();
+      if (p && p.then) p.then(showOnFrame).catch(() => {}); else showOnFrame();
+    };
+    video.addEventListener("playing", () => { started = true; });
+    video.addEventListener("error", () => { if (next() && motionOn) play(); });
     video.addEventListener("ended", hold);
     let lock = false;
     hoverEl.addEventListener("pointerenter", () => {
@@ -93,11 +106,7 @@ const SITE_CONFIG = {
       lock = true; play(); setTimeout(() => { lock = false; }, 1500);
     });
     next();
-    if (!motionOn) {
-      video.addEventListener("loadedmetadata", hold, { once: true });
-      video.addEventListener("seeked", () => wrap.classList.add("has-video"), { once: true });
-    }
-    return { play, hold, video };
+    return { play, hold, video, hasStarted: () => started };
   }
   const wordWrap = document.querySelector(".brand__word");
   const word = document.querySelector("[data-wordmark]");
@@ -324,7 +333,7 @@ const SITE_CONFIG = {
     motionOn = on;
     root.classList.toggle("is-still", !on);
     if (motionBtn) { motionBtn.setAttribute("aria-pressed", String(on)); motionBtn.textContent = on ? "Motion on" : "Motion off"; }
-    if (on) { start(); if (word.paused && word.currentTime === 0) playWord(); bgVideos.forEach((v) => v.play().catch(() => {})); }
+    if (on) { start(); if (word.paused && !headerMark.hasStarted()) playWord(); bgVideos.forEach((v) => v.play().catch(() => {})); }
     else { stop(); if (!word.paused) holdLastFrame(); if (footMark && !footMark.video.paused) footMark.hold(); revealAll(); bgVideos.forEach((v) => v.pause()); }
     if (persist) { try { localStorage.setItem("v3-motion", on ? "on" : "off"); } catch (_) {} }
   }
@@ -338,7 +347,7 @@ const SITE_CONFIG = {
   applyMotion(motionOn, false);
 
   // Browsers that block muted autoplay: retry the wordmark on the first real user gesture
-  const kick = () => { if (motionOn && !wordWrap.classList.contains("has-video") && word.paused) word.play().catch(() => {}); };
+  const kick = () => { if (motionOn && !headerMark.hasStarted() && word.paused) playWord(); };
   window.addEventListener("pointerdown", kick, { once: true, passive: true });
   window.addEventListener("keydown", kick, { once: true, passive: true });
   window.addEventListener("touchstart", kick, { once: true, passive: true });
