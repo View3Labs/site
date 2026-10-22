@@ -71,7 +71,7 @@ strong { font-weight: 500; color: var(--ink); }
 .brand {
   position: relative; z-index: 6;
   display: flex; align-items: center;
-  transform: translate3d(calc(var(--mx) * -4px), calc(var(--my) * -3px), 0) scale(1);
+  transform: translate3d(0, 0, 0) scale(1);                               /* no pointer parallax on the lockup: it stays put under the cursor */
   transform-origin: left center;
   transition: transform .3s ease-out;
 }
