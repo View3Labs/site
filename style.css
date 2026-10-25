@@ -148,7 +148,7 @@ strong { font-weight: 500; color: var(--ink); }
 .hero > .meta { position: relative; z-index: 1; }                                           /* axis bar, Scroll link and Motion toggle stay above the media layer */
 .hero__media .section__video {                                                             /* alpha symbol loop shown bright; the particle field shows through its transparency */
   position: absolute; left: 50%; top: calc(50% - clamp(16px, 3vh, 36px)); transform: translate(-50%, -50%);   /* lifted by half the copy's bottom padding: centred on headline-to-buttons */
-  width: clamp(640px, 105vw, 1900px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;  /* sized by viewport width: smaller on phones, larger on big screens */
+  width: clamp(440px, 70vw, 1260px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;   /* sized by viewport width: smaller on phones, larger on big screens; two thirds of the old ring's box for the V3 icon */
   opacity: 1; filter: none;
 }
 .hero__media .section__video.is-blend { mix-blend-mode: screen; }                         /* MP4 fallback only: its black ground is keyed out by the blend */
