@@ -148,10 +148,11 @@ strong { font-weight: 500; color: var(--ink); }
 .hero > .meta { position: relative; z-index: 1; }                                           /* axis bar, Scroll link and Motion toggle stay above the media layer */
 .hero__media .section__video {                                                             /* alpha symbol loop shown bright; the particle field shows through its transparency */
   position: absolute; left: 50%; top: calc(50% - clamp(16px, 3vh, 36px)); transform: translate(-50%, -50%);   /* lifted by half the copy's bottom padding: centred on headline-to-buttons */
-  width: clamp(440px, 70vw, 1260px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;   /* sized by viewport width: smaller on phones, larger on big screens; two thirds of the old ring's box for the V3 icon */
+  width: clamp(440px, 70vw, 880px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;    /* sized by viewport width up to about 1250px wide, then held: the mark reads better at its smaller-screen size */
   opacity: 1; filter: none;
 }
 .hero__media .section__video.is-blend { mix-blend-mode: screen; }                         /* MP4 fallback only: its black ground is keyed out by the blend */
+@media (min-width: 1600px) { .hero__media .section__video { width: 600px; } }            /* large monitors: the mark steps down again, close to its size on a small laptop */
 .hero__copy {
   position: relative; z-index: 1;
   align-self: center;
