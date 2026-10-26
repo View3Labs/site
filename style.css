@@ -549,7 +549,7 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 
 /* Coming soon sticker: the mint block's HUD look at sticker scale, above the headline on the lockup's left edge (green tone throughout) */
 .sticker {
-  position: relative; display: inline-flex; width: max-content; margin: 0 0 clamp(22px, 3.4vh, 36px);
+  position: relative; top: -10px; display: inline-flex; width: max-content; margin: 0 0 clamp(22px, 3.4vh, 36px);   /* lifted 10px clear of the headline; the rest of the copy stays put */
   align-items: center; gap: 10px;
   padding: 12px 16px 12px 18px; border-radius: 12px;
   border: 1px solid rgba(57,255,106,0.3);
