@@ -80,7 +80,7 @@ strong { font-weight: 500; color: var(--ink); }
 .brand__video, .brand__img {
   width: 100%; aspect-ratio: 840 / 160; height: auto;                     /* no CSS filter here: WebKit drops a video's alpha when one is applied */
 }
-.brand__video { display: none; }
+.brand__video { display: none; pointer-events: none; }                                    /* never a tap target: some webviews open a tapped video fullscreen */
 .brand__video.is-blend { mix-blend-mode: screen; }
 .brand__word.has-video .brand__video { display: block; }
 .brand__word.has-video .brand__img { display: none; }
@@ -440,7 +440,7 @@ a.links__link:hover { color: var(--green); border-color: var(--green); }
 .footer__mark { width: calc(var(--fw) * 0.2186); height: auto; flex: none; margin-right: -1px; }
 .footer__word { position: relative; display: block; width: var(--fw); }
 .footer__video, .footer__img { width: 100%; aspect-ratio: 840 / 160; height: auto; }
-.footer__video { display: none; }
+.footer__video { display: none; pointer-events: none; }
 .footer__video.is-blend { mix-blend-mode: screen; }
 .footer__word.has-video .footer__video { display: block; }
 .footer__word.has-video .footer__img { display: none; }

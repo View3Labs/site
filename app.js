@@ -27,6 +27,16 @@ const SITE_CONFIG = {
   const isWebKit = /Apple/.test(navigator.vendor || "") && !/Chrome\/|Chromium\/|Edg\//.test(ua);
   const probe = document.createElement("video");
   const canVP9 = probe.canPlayType('video/webm; codecs="vp9"') !== "";
+  const canHover = window.matchMedia("(hover: hover)").matches;        // touch-only devices get no hover replay: a tap must never start a video
+  let inlineBlocked = false;                                             // set once a webview has forced a video into its native fullscreen player
+  // Some in-app browsers (the X app on iPhone, for one) ignore playsinline and open any playing video in the native
+  // fullscreen player. If that happens: leave it at once, stop the video and remember, so nothing else tries to play.
+  const guardInline = (video, onBlocked) => video.addEventListener("webkitbeginfullscreen", () => {
+    inlineBlocked = true;
+    try { video.webkitExitFullscreen(); } catch (_) {}
+    video.pause();
+    if (onBlocked) onBlocked();
+  });
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const lerp = (a, b, t) => a + (b - a) * t;
 
@@ -92,7 +102,7 @@ const SITE_CONFIG = {
     // The video is swapped in only once a fresh frame has actually been painted.
     const showOnFrame = () => { if (video.requestVideoFrameCallback) video.requestVideoFrameCallback(() => show()); else show(); };
     const play = () => {
-      if (!motionOn) return;
+      if (!motionOn || inlineBlocked) return;
       if (video.currentTime > 0) { try { video.currentTime = 0; } catch (_) {} }
       const p = video.play();
       if (p && p.then) p.then(showOnFrame).catch(() => {}); else showOnFrame();
@@ -100,8 +110,9 @@ const SITE_CONFIG = {
     video.addEventListener("playing", () => { started = true; });
     video.addEventListener("error", () => { if (next() && motionOn) play(); });
     video.addEventListener("ended", hold);
+    guardInline(video, hold);                                                        // forced fullscreen: back to the still at once
     let lock = false;
-    hoverEl.addEventListener("pointerenter", () => {
+    if (canHover) hoverEl.addEventListener("pointerenter", () => {                   // desktop only: on touch a tap would start the video
       if (lock || !video.paused) return;
       lock = true; play(); setTimeout(() => { lock = false; }, 1500);
     });
@@ -131,14 +142,32 @@ const SITE_CONFIG = {
       : canVP9
         ? [{ src: ASSETS + "symbol-loop.webm" }, { src: ASSETS + "symbol-loop.mp4", blend: true }]
         : [{ src: ASSETS + "symbol-loop.mp4", blend: true }];
+    // Where video cannot run on its own (autoplay refused by an in-app browser or Low Power Mode, or a webview that
+    // only plays fullscreen), the same loop plays as an animated WebP image, which no media policy can stop.
+    let swapped = false;
+    const useAnimatedImage = () => {
+      if (swapped || !motionOn) return;
+      swapped = true;
+      const img = new Image();
+      img.className = "section__video"; img.alt = ""; img.decoding = "async";
+      img.src = ASSETS + "symbol-loop.webp";
+      heroSymbol.pause(); heroSymbol.replaceWith(img);
+    };
+    const tryPlay = () => {                                                          // an explicit play() reports a refusal; the autoplay attribute is silent
+      if (!motionOn || swapped) return;
+      const p = heroSymbol.play();
+      if (p && p.catch) p.catch((e) => { if (e && e.name === "NotAllowedError") useAnimatedImage(); });
+    };
     let si = -1;
     const nextSymbolSrc = () => {
       si++; const s = chain[si];
       if (!s) { heroSymbol.removeAttribute("src"); heroSymbol.load(); return; }   // chain exhausted: the transparent poster stays
       heroSymbol.classList.toggle("is-blend", !!s.blend);                           // MP4 fallback keys its black out with a screen blend
       heroSymbol.src = s.src;
+      tryPlay();
     };
     heroSymbol.addEventListener("error", nextSymbolSrc);
+    guardInline(heroSymbol, useAnimatedImage);
     if (!motionOn) heroSymbol.autoplay = false;                                    // Motion off: stays on its poster frame
     nextSymbolSrc();
   }
