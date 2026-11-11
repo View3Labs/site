@@ -140,7 +140,7 @@ strong { font-weight: 500; color: var(--ink); }
 /* ---------- Hero ---------- */
 .hero {
   position: relative; z-index: auto; overflow: hidden;                                       /* z-index auto: no isolated context, so the fallback blend reaches the field */
-  min-height: calc(var(--vh, 100svh) - var(--top-h, 96px));                                /* --vh: the visible height measured on touch devices; see app.js */                                            /* the hero and its meta bar fill the first screen exactly */
+  min-height: calc(var(--vh, 100svh) - var(--top-h, 96px));                                /* the hero and its meta bar fill the first screen exactly; --vh is the visible height measured on touch devices, see app.js */
   display: grid; grid-template-rows: 1fr auto;
   padding: clamp(24px, 6vh, 72px) 0 0;
 }
@@ -528,6 +528,12 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
   .meta__cue { animation: none; }
   .alloc.is-in .alloc__seg, .table-wrap.is-in .table__bar span { animation: none; }
   .mint--warning .mint__dot, .mint__dot { animation: none; }
+}
+
+@media (max-width: 480px) {                                                            /* the header must never be wider than the screen: Android Chrome would widen the layout viewport to fit it */
+  :root { --word-w: clamp(130px, min(48vw, 80vw - 136px), 220px); }                    /* brand + 12px + three 36px icons at 4px + two 18px gutters stays inside 100vw */
+  .top { gap: 12px; }
+  .top__icons { gap: 4px; }
 }
 
 /* ============================================================================

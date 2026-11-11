@@ -193,20 +193,24 @@ const SITE_CONFIG = {
   onScroll();
   const setTopH = () => { if (!stuck) root.style.setProperty("--top-h", top.offsetHeight + "px"); };   // hero height = viewport minus the header
   setTopH(); window.addEventListener("resize", setTopH, { passive: true }); window.addEventListener("load", setTopH);
+  window.addEventListener("resize", () => setTimeout(setTopH, 350), { passive: true });     // .top animates its padding for 300ms: read it again once settled
+  top.addEventListener("transitionend", (e) => { if (e.target === top) setTopH(); });
   // Hero height on touch devices: the smallest visible height seen for the current width, read live. CSS svh means the
   // same, but some in-app browsers (the X app on iPhone) only report their bottom toolbar after the first layout, and the
   // unit keeps the first answer; the page then overflowed by the toolbar's height on a first visit. Desktop keeps CSS.
   if (!canHover) {
     let vhW = 0, vhMin = Infinity;
     const setVH = () => {
+      if (window.visualViewport && Math.abs(window.visualViewport.scale - 1) > 0.01) return;   // Safari reports the zoomed viewport here: never sample mid-pinch
       const w = window.innerWidth, h = window.innerHeight;
       if (!w || !h) return;
-      if (w !== vhW) { vhW = w; vhMin = Infinity; }                                  // rotation starts afresh
+      if (w !== vhW || Math.abs(h - vhMin) > vhMin * 0.25) { vhW = w; vhMin = Infinity; }   // rotation, split screen or a keyboard leaving start afresh; bars are far smaller than a quarter
       if (h < vhMin) { vhMin = h; root.style.setProperty("--vh", h + "px"); }       // never grows for a toolbar that hides on scroll
     };
+    const settleVH = () => { setVH(); setTimeout(setVH, 300); setTimeout(setVH, 1000); };   // a resize may settle silently a moment later
     setVH();
-    window.addEventListener("resize", setVH, { passive: true });
-    window.addEventListener("orientationchange", () => setTimeout(setVH, 300));
+    window.addEventListener("resize", settleVH, { passive: true });
+    window.addEventListener("orientationchange", settleVH);
     window.addEventListener("load", setVH);
     [300, 1000, 2500].forEach((ms) => setTimeout(setVH, ms));                        // the browser may settle its bars after load
   }
