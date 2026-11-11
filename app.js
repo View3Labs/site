@@ -193,6 +193,23 @@ const SITE_CONFIG = {
   onScroll();
   const setTopH = () => { if (!stuck) root.style.setProperty("--top-h", top.offsetHeight + "px"); };   // hero height = viewport minus the header
   setTopH(); window.addEventListener("resize", setTopH, { passive: true }); window.addEventListener("load", setTopH);
+  // Hero height on touch devices: the smallest visible height seen for the current width, read live. CSS svh means the
+  // same, but some in-app browsers (the X app on iPhone) only report their bottom toolbar after the first layout, and the
+  // unit keeps the first answer; the page then overflowed by the toolbar's height on a first visit. Desktop keeps CSS.
+  if (!canHover) {
+    let vhW = 0, vhMin = Infinity;
+    const setVH = () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      if (!w || !h) return;
+      if (w !== vhW) { vhW = w; vhMin = Infinity; }                                  // rotation starts afresh
+      if (h < vhMin) { vhMin = h; root.style.setProperty("--vh", h + "px"); }       // never grows for a toolbar that hides on scroll
+    };
+    setVH();
+    window.addEventListener("resize", setVH, { passive: true });
+    window.addEventListener("orientationchange", () => setTimeout(setVH, 300));
+    window.addEventListener("load", setVH);
+    [300, 1000, 2500].forEach((ms) => setTimeout(setVH, ms));                        // the browser may settle its bars after load
+  }
 
   /* ---------- Scroll reveal ---------- */
   const reveals = Array.from(document.querySelectorAll(".reveal"));

@@ -140,7 +140,7 @@ strong { font-weight: 500; color: var(--ink); }
 /* ---------- Hero ---------- */
 .hero {
   position: relative; z-index: auto; overflow: hidden;                                       /* z-index auto: no isolated context, so the fallback blend reaches the field */
-  min-height: calc(100svh - var(--top-h, 96px));                                            /* the hero and its meta bar fill the first screen exactly */
+  min-height: calc(var(--vh, 100svh) - var(--top-h, 96px));                                /* --vh: the visible height measured on touch devices; see app.js */                                            /* the hero and its meta bar fill the first screen exactly */
   display: grid; grid-template-rows: 1fr auto;
   padding: clamp(24px, 6vh, 72px) 0 0;
 }
