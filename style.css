@@ -134,8 +134,6 @@ strong { font-weight: 500; color: var(--ink); }
 }
 .btn:hover { transform: translateY(-1px); }
 .btn--primary { background: var(--green); color: #031207; }
-.btn--ghost { border-color: rgba(255,255,255,0.16); color: var(--ink); background: rgba(5,6,5,0.5); transition: border-color .25s ease; }
-.btn--ghost:hover, .btn--ghost:focus-visible { border-color: var(--green); }   /* thin outline turns green */
 
 
 /* ---------- Hero ---------- */
@@ -328,7 +326,7 @@ strong { font-weight: 500; color: var(--ink); }
   display: inline-flex; align-items: center; gap: 9px;
   font-family: var(--font-display); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
 }
-.mint__dot { width: 7px; height: 7px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+.mint__dot { width: 7px; height: 7px; border-radius: 50%; }
 .mint__title { font-size: clamp(1.35rem, 2.2vw, 1.75rem); font-weight: 500; line-height: 1.2; color: var(--ink); margin-bottom: 10px; }
 .mint p:last-child { margin-bottom: 0; }
 .mint strong { color: var(--ink); }
@@ -517,7 +515,6 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
   :root { --word-w: clamp(150px, 48vw, 220px); }
   .meta { flex-wrap: wrap; row-gap: 8px; }
   .meta__status { order: 0; flex: 1 0 100%; }                                /* its own row: the axis readout follows the phone's tilt and keeps its line */
-  .hero__media .section__video { top: 23%; }                                /* the mark sits in the space above the headline instead of on the paragraph */
   html { scroll-padding-top: 72px; }
     .meta__scroll { display: none; }
   .links__row { grid-template-columns: 1fr; gap: 4px; }
@@ -534,7 +531,7 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .brand, .nav a::after, .menu__bar, .reveal, .card, .btn, .btn-line, a.links__link::after { transition: none; }
+  .brand, .nav a::after, .menu__bar, .reveal, .card, .btn, .btn-line, .top__pill, .page__back, .footer__icon, a.links__link::after { transition: none; }
   .reveal { opacity: 1; transform: none; }
   .meta__cue { animation: none; }
   .alloc.is-in .alloc__seg, .table-wrap.is-in .table__bar span { animation: none; }
@@ -552,7 +549,7 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
    ========================================================================== */
 .top__right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
 .top__pill, .page__back, .btn-line {                                              /* one button design: header Litepaper, hero actions, the links page's Back */
-  display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 9px; line-height: 1;   /* the icon buttons' shape and ground */
+  display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 9px; line-height: 1; text-transform: none;   /* the icon buttons' shape and ground */
   font-family: var(--font-body); font-size: 13px; letter-spacing: 0.03em; color: var(--mute);
   border: 1px solid var(--line); background: rgba(5,6,5,0.6);
   transition: border-color .2s, color .2s, transform .2s;
@@ -564,5 +561,5 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 .page .section { padding-top: clamp(40px, 7vh, 80px); }
 .page .section + .section { padding-top: 0; }
 .page__back { margin-top: 28px; }
-@media (max-width: 560px) { .top__pill { display: none; } }                /* the Notion icon and the hero button still carry the litepaper */
+@media (max-width: 560px) { .top__pill { display: none; } }                /* the Notion icon and the links page still carry the litepaper */
 
