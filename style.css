@@ -137,6 +137,7 @@ strong { font-weight: 500; color: var(--ink); }
 .btn--ghost { border-color: rgba(255,255,255,0.16); color: var(--ink); background: rgba(5,6,5,0.5); transition: border-color .25s ease; }
 .btn--ghost:hover, .btn--ghost:focus-visible { border-color: var(--green); }   /* thin outline turns green */
 
+
 /* ---------- Hero ---------- */
 .hero {
   position: relative; z-index: auto; overflow: hidden;                                       /* z-index auto: no isolated context, so the fallback blend reaches the field */
@@ -170,17 +171,19 @@ strong { font-weight: 500; color: var(--ink); }
 }
 .hero__intro { max-width: var(--measure); color: var(--body); font-size: clamp(1rem, 1.3vw, 1.125rem); margin-bottom: 10px; }
 .hero__tagline { max-width: var(--measure); color: var(--mute); font-size: 0.9rem; margin-bottom: 18px; }
-.hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero__actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
 
 /* Axis bar (hero footer) */
 .meta {
-  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  display: flex; justify-content: flex-start; align-items: center; gap: 18px;
   padding: 10px var(--gutter) 18px;
   font-family: var(--font-display); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
   color: var(--mute);
 }
-.meta__right { display: inline-flex; align-items: center; gap: 18px; }
+.meta__right { display: inline-flex; align-items: center; gap: 18px; order: 3; margin-left: auto; }
+.meta [data-coord] { order: 1; }
+.meta__status { order: 2; color: var(--mute); }                              /* the holding page's status, in the bar's own voice */
 .meta [data-sig] { color: var(--green); opacity: 0.8; }
 .meta__scroll { display: inline-flex; align-items: center; gap: 10px; color: var(--mute); transition: color .2s; }
 .meta__scroll:hover { color: var(--ink); }
@@ -421,8 +424,13 @@ strong { font-weight: 500; color: var(--ink); }
 .links__row:last-child { border-bottom: 0; }
 .links__channel { font-family: var(--font-display); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
 .links__link { color: var(--ink); word-break: break-word; }
-a.links__link { border-bottom: 1px solid rgba(57,255,106,0.35); transition: border-color .2s, color .2s; }
-a.links__link:hover { color: var(--green); border-color: var(--green); }
+a.links__link { position: relative; border-bottom: 1px solid rgba(57,255,106,0.35); transition: color .2s; }
+a.links__link::after {                                                       /* the green line draws in from the left on hover and leaves to the right */
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: var(--green);
+  transform: scaleX(0); transform-origin: right; transition: transform .32s cubic-bezier(.2,.8,.2,1);
+}
+a.links__link:hover, a.links__link:focus-visible { color: var(--green); }
+a.links__link:hover::after, a.links__link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
 .links__link--text, span.links__link { color: var(--body); }
 .links__note { color: var(--mute); font-size: 0.9rem; text-align: right; }
 
@@ -507,6 +515,9 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 
 @media (max-width: 720px) {
   :root { --word-w: clamp(150px, 48vw, 220px); }
+  .meta { flex-wrap: wrap; row-gap: 8px; }
+  .meta__status { order: 0; flex: 1 0 100%; }                                /* its own row: the axis readout follows the phone's tilt and keeps its line */
+  .hero__media .section__video { top: 23%; }                                /* the mark sits in the space above the headline instead of on the paragraph */
   html { scroll-padding-top: 72px; }
     .meta__scroll { display: none; }
   .links__row { grid-template-columns: 1fr; gap: 4px; }
@@ -523,7 +534,7 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .brand, .nav a::after, .menu__bar, .reveal, .card, .btn { transition: none; }
+  .brand, .nav a::after, .menu__bar, .reveal, .card, .btn, .btn-line, a.links__link::after { transition: none; }
   .reveal { opacity: 1; transform: none; }
   .meta__cue { animation: none; }
   .alloc.is-in .alloc__seg, .table-wrap.is-in .table__bar span { animation: none; }
@@ -533,41 +544,25 @@ html.is-still .alloc.is-in .alloc__seg, html.is-still .table-wrap.is-in .table__
 @media (max-width: 480px) {                                                            /* the header must never be wider than the screen: Android Chrome would widen the layout viewport to fit it */
   :root { --word-w: clamp(130px, min(48vw, 80vw - 136px), 220px); }                    /* brand + 12px + three 36px icons at 4px + two 18px gutters stays inside 100vw */
   .top { gap: 12px; }
-  .top__icons { gap: 4px; }
+  .top__right .top__icons { gap: 4px; }                                                /* outranks the base .top__icons rule further down */
 }
 
 /* ============================================================================
    Holding page (pre-launch): header right-hand group, full-height hero, links page
    ========================================================================== */
-.top__right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
-.top__pill {
-  font-family: var(--font-body); font-size: 13px; letter-spacing: 0.03em; color: var(--ink);
-  padding: 9px 15px; border: 1px solid rgba(255,255,255,0.14); border-radius: 999px;
-  background: rgba(5,6,5,0.82); transition: border-color .2s;
+.top__right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.top__pill, .page__back, .btn-line {                                              /* one button design: header Litepaper, hero actions, the links page's Back */
+  display: inline-flex; align-items: center; height: 36px; padding: 0 14px; border-radius: 9px; line-height: 1;   /* the icon buttons' shape and ground */
+  font-family: var(--font-body); font-size: 13px; letter-spacing: 0.03em; color: var(--mute);
+  border: 1px solid var(--line); background: rgba(5,6,5,0.6);
+  transition: border-color .2s, color .2s, transform .2s;
 }
-.top__pill:hover, .top__pill:focus-visible { border-color: rgba(255,255,255,0.4); }
+.top__pill:hover, .top__pill:focus-visible, .page__back:hover, .page__back:focus-visible, .btn-line:hover, .btn-line:focus-visible { border-color: rgba(57,255,106,0.6); color: var(--green); transform: translateY(-2px); }
 .top__icons { display: flex; gap: 8px; }
 .holding .hero__copy { padding-bottom: clamp(40px, 8vh, 96px); }
 .page { position: relative; z-index: 2; }                                   /* links page: sections stack over the field */
 .page .section { padding-top: clamp(40px, 7vh, 80px); }
 .page .section + .section { padding-top: 0; }
-.page__back { display: inline-flex; margin-top: 28px; }
+.page__back { margin-top: 28px; }
 @media (max-width: 560px) { .top__pill { display: none; } }                /* the Notion icon and the hero button still carry the litepaper */
 
-/* Coming soon sticker: the mint block's HUD look at sticker scale, above the headline on the lockup's left edge (green tone throughout) */
-.sticker {
-  position: relative; top: -10px; display: inline-flex; width: max-content; margin: 0 0 clamp(22px, 3.4vh, 36px);   /* lifted 10px clear of the headline; the rest of the copy stays put */
-  align-items: center; gap: 10px;
-  padding: 12px 16px 12px 18px; border-radius: 12px;
-  border: 1px solid rgba(57,255,106,0.3);
-  background: linear-gradient(135deg, rgba(57,255,106,0.08), rgba(5,6,5,0.9) 60%);
-  box-shadow: 0 14px 34px rgba(0,0,0,0.5);
-  font-family: var(--font-display); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink);
-  pointer-events: none;
-}
-.sticker::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; border-radius: 12px 0 0 12px; background: rgba(57,255,106,0.8); }
-.sticker__text { display: inline-flex; align-items: center; gap: 9px; }
-.sticker__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px rgba(57,255,106,0.5); animation: flash 1.1s steps(1, end) infinite; }
-html.is-still .sticker__dot { animation: none; }
-@media (max-width: 720px) { .sticker { padding: 10px 14px 10px 16px; } }
-@media (prefers-reduced-motion: reduce) { .sticker__dot { animation: none; } }
